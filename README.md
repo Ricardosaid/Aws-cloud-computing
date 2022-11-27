@@ -29,8 +29,17 @@ print(queue.attributes.get('DelaySeconds'))
 ```
 
 
-Before creating a queue, you must first get the SQS service resource:
-
-
-
 > Note:Thanks Boto3 Docs 1.26.16 documentation por the information! 
+
+### Using DynamoDB locally
+
+If port 8000 is already in use, specify a different port number using the `--port ` option
+
+Specify the parameter `--endpoint-url` to connect to the local database
+
+Update the endpoint in your code when you are ready to connect to the web service
+
+```console
+docker pull amazon/dynamodb-local
+docker run -p 8000:8000 amazon/dynamodb-local:latest
+```
