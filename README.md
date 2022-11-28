@@ -31,6 +31,8 @@ print(queue.attributes.get('DelaySeconds'))
 
 > Note:Thanks Boto3 Docs 1.26.16 documentation por the information! 
 
+## DynamoDB 
+
 ### Using DynamoDB locally
 
 If port 8000 is already in use, specify a different port number using the `--port ` option
@@ -43,3 +45,41 @@ Update the endpoint in your code when you are ready to connect to the web servic
 docker pull amazon/dynamodb-local
 docker run -p 8000:8000 amazon/dynamodb-local:latest
 ```
+
+### Create a table
+
+The table's name is `Music` and has the following details:
+
+1. Partition Key - `Artist`
+2. Sort Key - `SongTitle`
+
+Code in aws:
+
+```console
+aws dynamodb create-table \
+--table-name Music \
+--attribute-definitions \
+AttributeName=Artist,AttributeType=S \
+AttributeName=SongTitle,AttributeType=S \
+--key-schema \
+AttributeName=Artist,KeyType=HASH \
+AttributeName=SongTitle,KeyType=RANGE \
+--provisioned-throughput \
+ReadCapacityUnits=5,WriteCapacityUnits=5 \
+--table-class STANDARD
+```
+To verify the table's status, in CLI:
+
+```console
+aws dynamodb describe-table --table-name Music | grep TableStatus
+```
+You'll see the status as `ACTIVE`
+
+Like best practice, enable `Point-in-time recovery for DynamoDB` by running the following command:
+```console
+aws dynamodb update-continuous-backups \
+--table-name Music \
+--point-in-time-recovery-specification \
+PointInTimeRecoveryEnabled=true
+```
+> Note: There are cost implications to enabling continuous backups with point-in-time recovery
