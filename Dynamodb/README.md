@@ -86,3 +86,22 @@ aws dynamodb update-item \
 --expression-attribute-values '{":newval":{"S":"Updated Album Title"}}' \
 --return-values ALL_NEW
 ```
+
+### Query data in a table
+```console
+aws dynamodb query \
+--table-name Music \
+--key-condition-expression "Artist = :name" \
+--expression-attribute-values '{":name":{"S":"Coldplay"}}'
+```
+> Note: --projection-expression "SongTitle" -> filter of SongTitle
+
+### Scan a table
+
+```console
+aws dynamodb scan \
+--table-name Music
+--filter-expression "Artist =:name" \
+--expression-attribute-values '{":name":{"S":"Coldplay"}}'
+```
+
